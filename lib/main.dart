@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const grey = Color(0xFF121212);
-const primary = Color(0xFF00FF00);
-const textStyle = TextStyle(color: primary);
 void main() {
   runApp(const MyApp());
 }
+
+const grey = Color(0xFF121212);
+const primary = Color(0xFF00FF00);
+const textStyle = TextStyle(color: primary);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -27,10 +28,56 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late String _counter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: grey,
+        title: const Text(
+          'Get Free',
+          style: textStyle,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: _settings,
+            icon: const Icon(
+              Icons.settings,
+              color: primary,
+            ),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text(
+          _counter,
+          style: textStyle,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primary,
+        onPressed: _onTap,
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
   Future<void> _init() async {
     final s = (await SharedPreferences.getInstance()).getInt('days') ?? 0;
     setState(() {
-      counter = '$s days';
+      _counter = '$s days';
     });
   }
 
@@ -70,50 +117,5 @@ class _MyHomePageState extends State<MyHomePage> {
     await (await SharedPreferences.getInstance())
         .setInt('days', int.parse(t.text));
     _init();
-  }
-
-  late String counter;
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: grey,
-        title: const Text(
-          'Get Free',
-          style: textStyle,
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: _settings,
-            icon: const Icon(
-              Icons.settings,
-              color: primary,
-            ),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Text(
-          counter,
-          style: textStyle,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primary,
-        onPressed: _onTap,
-        child: const Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      ),
-    );
   }
 }
