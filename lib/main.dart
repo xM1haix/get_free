@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "dart:async";
+
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Get Free',
+      title: "Get Free",
       home: MyHomePage(),
     );
   }
@@ -37,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: grey,
         title: const Text(
-          'Get Free',
+          "Get Free",
           style: textStyle,
         ),
         centerTitle: true,
@@ -71,20 +73,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _init();
+    unawaited(_init());
   }
 
   Future<void> _init() async {
-    final s = (await SharedPreferences.getInstance()).getInt('days') ?? 0;
+    final s = (await SharedPreferences.getInstance()).getInt("days") ?? 0;
     setState(() {
-      _counter = '$s days';
+      _counter = "$s days";
     });
   }
 
   Future<void> _onTap() async {
     final s = await SharedPreferences.getInstance();
-    await s.setInt('days', (s.getInt('days') ?? 0) + 1);
-    _init();
+    await s.setInt("days", (s.getInt("days") ?? 0) + 1);
+    await _init();
   }
 
   Future<void> _settings() async {
@@ -95,12 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: grey,
         content: TextField(
           controller: t,
-          keyboardType: const TextInputType.numberWithOptions(),
+          keyboardType: TextInputType.number,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d*$'))
+            FilteringTextInputFormatter.allow(RegExp(r"^\d*$")),
           ],
         ),
-        actions: [('Save', true), ('Cancel', false)]
+        actions: [("Save", true), ("Cancel", false)]
             .map(
               (e) => TextButton(
                 onPressed: () => Navigator.pop(context, e.$2),
@@ -113,9 +115,11 @@ class _MyHomePageState extends State<MyHomePage> {
             .toList(),
       ),
     );
-    if (c != true) return;
+    if (c != true) {
+      return;
+    }
     await (await SharedPreferences.getInstance())
-        .setInt('days', int.parse(t.text));
-    _init();
+        .setInt("days", int.parse(t.text));
+    await _init();
   }
 }
