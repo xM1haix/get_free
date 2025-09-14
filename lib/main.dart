@@ -8,11 +8,18 @@ void main() {
   runApp(const MyApp());
 }
 
+///[grey] [Color] constant for app
 const grey = Color(0xFF121212);
+
+///[primary] [Color] constant for app
 const primary = Color(0xFF00FF00);
+
+///[textStyle] [TextStyle] constant for app
 const textStyle = TextStyle(color: primary);
 
+///Main skelethon of the app
 class MyApp extends StatelessWidget {
+  ///
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+///Main skelethon of the app
 class MyHomePage extends StatefulWidget {
+  ///
   const MyHomePage({super.key});
   @override
   State<MyHomePage> createState() => _MyHomePageState();
